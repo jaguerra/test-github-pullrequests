@@ -13,6 +13,7 @@ namespace TYPO3\Neos\Command;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Cli\CommandController;
+use TYPO3\Flow\Error\Error;
 use TYPO3\Flow\Package\PackageManagerInterface;
 use TYPO3\Neos\Domain\Repository\SiteRepository;
 use TYPO3\Neos\Domain\Service\SiteExportService;
@@ -111,6 +112,18 @@ class SiteCommandController extends CommandController {
 			}
 		}
 		$this->outputLine('Import of site "%s" finished.', array($site->getName()));
+
+		$lastImportErrors = $this->siteImportService->getLastImportErrors();
+
+		$this->outputLine("The following non-fatal error occured:");
+		if ($lastImportErrors->hasErrors()) {
+			foreach ($lastImportErrors->getFlattenedErrors() as $errorList) {
+				foreach ($errorList as $error) {
+					/* @var $error Error */
+					$this->outputLine(' - ' . $error->render());
+				}
+			}
+		}
 	}
 
 	/**

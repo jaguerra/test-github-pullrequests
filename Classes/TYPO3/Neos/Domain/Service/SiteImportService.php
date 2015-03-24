@@ -12,6 +12,7 @@ namespace TYPO3\Neos\Domain\Service;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Error\Result;
 use TYPO3\Flow\Object\ObjectManagerInterface;
 use TYPO3\Flow\Package\Exception\InvalidPackageStateException;
 use TYPO3\Flow\Package\Exception\UnknownPackageException;
@@ -200,6 +201,13 @@ class SiteImportService {
 		}
 		$this->emitSiteImported($site);
 		return $site;
+	}
+
+	/**
+	 * @return Result Non-Fatal Error Messages occuring during the import
+	 */
+	public function getLastImportErrors() {
+		return $this->nodeImportService->getLastImportErrors();
 	}
 
 	/**

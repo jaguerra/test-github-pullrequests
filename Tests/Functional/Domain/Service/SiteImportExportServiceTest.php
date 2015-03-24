@@ -95,4 +95,29 @@ class SiteImportExportServiceTest extends FunctionalTestCase {
 			$this->markTestSkipped('This test needs the TYPO3.Neos.NodeTypes package.');
 		}
 	}
+
+	/**
+	 * @test
+	 */
+	public function aBrokenImageDoesNotCauseAFatalError() {
+		$contentContext = $this->contextFactory->create(array('workspaceName' => 'live'));
+		$this->importedSite = $this->siteImportService->importFromFile(__DIR__ . '/Fixtures/SitesWithBrokenImage.xml', $contentContext);
+
+		$contentContext = $this->contextFactory->create(array(
+			'currentSite' => $this->importedSite,
+			'invisibleContentShown' => TRUE,
+			'inaccessibleContentShown' => TRUE
+		));
+
+		$siteNode = $contentContext->getCurrentSiteNode();
+		/* @var $siteNode \TYPO3\TYPO3CR\Domain\Model\NodeInterface */
+		$homeNode = $siteNode->getNode('home');
+		$actual = $homeNode->getProperty('title');
+
+		$expected = '<h1>Home</h1>';
+		$this->assertSame($expected, $actual);
+		$this->assertTrue($this->siteImportService->getLastImportErrors()->hasErrors());
+
+		$this->persistenceManager->persistAll();
+	}
 }
