@@ -24,34 +24,12 @@ use TYPO3\Neos\Domain\Repository\SiteRepository;
  */
 class FooCommandController extends \TYPO3\Flow\Cli\CommandController {
 
-	/**
+	/*
+
+	*
 	 * @var DomainRepository
 	 * @Flow\Inject
-	 */
-	protected $domainRepository;
-
-	/**
-	 * @var SiteRepository
-	 * @Flow\Inject
-	 */
-	protected $siteRepository;
-
-	/**
-	 * Add a domain record
-	 *
-	 * @param string $siteNodeName The nodeName of the site rootNode, e.g. "neostypo3org"
-	 * @param string $hostPattern The host pattern to match on, e.g. "neos.typo3.org"
-	 * @return void
-	 */
-	public function addCommand($siteNodeName, $hostPattern) {
-		$site = $this->siteRepository->findOneByNodeName($siteNodeName);
-		if (!$site instanceof Site) {
-			$this->outputLine('No site found with nodeName "%s".', array($siteNodeName));
-			$this->quit(1);
-		}
-
-		$domains = $this->domainRepository->findByHostPattern($hostPattern);
-		if ($domains->count() > 0) {
+	
 			$this->outputLine('The host pattern "%s" is not unique.', array($hostPattern));
 			$this->quit(1);
 		}
