@@ -22,7 +22,7 @@ use TYPO3\Neos\Domain\Repository\SiteRepository;
  *
  * @Flow\Scope("singleton")
  */
-class DomainCommandController extends \TYPO3\Flow\Cli\CommandController {
+class FooCommandController extends \TYPO3\Flow\Cli\CommandController {
 
 	/**
 	 * @var DomainRepository
