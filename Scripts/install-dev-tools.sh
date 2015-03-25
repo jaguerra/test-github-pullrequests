@@ -1,6 +1,7 @@
 #!/bin/bash
-
 set -e
+
+  echo "So you're still not having these tools installed uh?"
 
 # Ensure the remainder of this script is executed in the Scripts directory
 CURRENT_DIR="$(pwd)"
